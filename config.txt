@@ -36,3 +36,5 @@ uvicorn main:app --reload
 
 
 fastapi dev main.py
+
+@LuisDaniel15 ➜ /workspaces/FastApi-proyecto/app (main) $ uvicorn main:app --reload
