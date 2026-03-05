@@ -31,8 +31,9 @@ pip install pymysql
 pip install "fastapi[standard]"
 
 
+uvicorn app.main:app --reload
 
-uvicorn main:app --reload
+//uvicorn main:app --reload
 
 
 fastapi dev main.py
