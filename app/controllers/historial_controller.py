@@ -41,7 +41,6 @@ class HistorialResponse(BaseModel):
         from_attributes = True
 
 
-# ── CRUD ──────────────────────────────────────────────────────────────────────
 async def get_by_nino(
     nino_id: UUID,
     db: AsyncSession,

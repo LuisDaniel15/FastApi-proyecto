@@ -48,7 +48,6 @@ class PersonalResponse(BaseModel):
         from_attributes = True
 
 
-# ── CRUD ──────────────────────────────────────────────────────────────────────
 async def get_all(db: AsyncSession, skip: int = 0, limit: int = 20) -> list[Personal]:
     result = await db.execute(
         select(Personal).where(Personal.activo == True).offset(skip).limit(limit)

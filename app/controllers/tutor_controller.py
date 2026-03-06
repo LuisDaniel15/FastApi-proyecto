@@ -48,7 +48,6 @@ class TutorResponse(BaseModel):
         from_attributes = True
 
 
-# ── CRUD ──────────────────────────────────────────────────────────────────────
 async def get_all(db: AsyncSession, skip: int = 0, limit: int = 20) -> list[Tutor]:
     result = await db.execute(
         select(Tutor).where(Tutor.activo == True).offset(skip).limit(limit)

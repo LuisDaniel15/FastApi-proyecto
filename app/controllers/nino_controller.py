@@ -81,7 +81,6 @@ class NinoResponse(BaseModel):
         from_attributes = True
 
 
-# ── CRUD ──────────────────────────────────────────────────────────────────────
 async def get_all(db: AsyncSession, skip: int = 0, limit: int = 20) -> list[Nino]:
     result = await db.execute(
         select(Nino).where(Nino.activo == True).offset(skip).limit(limit)

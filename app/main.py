@@ -19,10 +19,10 @@ from app.routes.historial import router as historial_router
 async def lifespan(app: FastAPI):
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
-    print("✅ Conexión a Supabase establecida")
+    print("Conexión a Supabase establecida")
     yield
     await engine.dispose()
-    print("🔌 Conexión a Supabase cerrada")
+    print("Conexión a Supabase cerrada")
 
 
 app = FastAPI(

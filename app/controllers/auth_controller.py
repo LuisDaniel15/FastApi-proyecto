@@ -13,11 +13,9 @@ import bcrypt
 
 
 
-# ── Seguridad ─────────────────────────────────────────────────────────────────
 oauth2_scheme  = OAuth2PasswordBearer(tokenUrl="/auth/login")
 
 
-# ── Utilidades de contraseña ──────────────────────────────────────────────────
 def hash_password(password: str) -> str:
     return bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt()).decode("utf-8")
 
@@ -25,7 +23,6 @@ def verify_password(plain: str, hashed: str) -> bool:
     return bcrypt.checkpw(plain.encode("utf-8"), hashed.encode("utf-8"))
 
 
-# ── Utilidades JWT ────────────────────────────────────────────────────────────
 def create_access_token(data: dict) -> str:
     to_encode = data.copy()
     expire    = datetime.utcnow() + timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
@@ -33,7 +30,6 @@ def create_access_token(data: dict) -> str:
     return jwt.encode(to_encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
 
 
-# ── Login ─────────────────────────────────────────────────────────────────────
 async def login(email: str, password: str, db: AsyncSession) -> dict:
     result = await db.execute(select(Admin).where(Admin.email == email))
     admin  = result.scalar_one_or_none()
@@ -54,7 +50,6 @@ async def login(email: str, password: str, db: AsyncSession) -> dict:
     return {"access_token": token, "token_type": "bearer"}
 
 
-# ── Obtener admin autenticado (dependencia) ───────────────────────────────────
 async def get_current_admin(
     token: str = Depends(oauth2_scheme),
     db: AsyncSession = Depends(get_db),

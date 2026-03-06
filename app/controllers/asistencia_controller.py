@@ -36,7 +36,6 @@ class AsistenciaResponse(BaseModel):
         from_attributes = True
 
 
-# ── CRUD ──────────────────────────────────────────────────────────────────────
 async def registrar_entrada(data: RegistrarEntradaSchema, db: AsyncSession) -> Asistencia:
     # Verificar si ya tiene asistencia hoy
     result = await db.execute(
