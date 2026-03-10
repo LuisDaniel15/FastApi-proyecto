@@ -1,6 +1,5 @@
-import uuid
-from sqlalchemy import Boolean, Column, Date, String, TIMESTAMP, text
-from sqlalchemy.dialects.postgresql import UUID, ENUM
+from sqlalchemy import Boolean, Column, Date, Integer, String, TIMESTAMP, text
+from sqlalchemy.dialects.postgresql import ENUM
 from sqlalchemy.orm import relationship
 
 from app.config.db_config import Base
@@ -20,7 +19,7 @@ grupo_tipo = ENUM(
 class Nino(Base):
     __tablename__ = "ninos"
 
-    id                    = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    id                    = Column(Integer, primary_key=True, autoincrement=True)
     nombre                = Column(String(100), nullable=False)
     apellido              = Column(String(100), nullable=False)
     fecha_nacimiento      = Column(Date, nullable=False)
@@ -28,7 +27,7 @@ class Nino(Base):
     foto_url              = Column(String)
     grupo                 = Column(grupo_tipo)
     fecha_ingreso         = Column(Date, server_default=text("CURRENT_DATE"))
-    activo                = Column(Boolean, default=True, nullable=False)
+    activo                = Column(Boolean, nullable=False, server_default=text("TRUE"))
     tipo_sangre           = Column(String(5))
     medico_nombre         = Column(String(150))
     medico_telefono       = Column(String(20))
@@ -37,7 +36,9 @@ class Nino(Base):
     creado_en             = Column(TIMESTAMP(timezone=True), server_default=text("NOW()"))
     actualizado_en        = Column(TIMESTAMP(timezone=True), server_default=text("NOW()"))
 
-    # Relaciones
-    tutores  = relationship("NinoTutor", back_populates="nino")
-    alergias = relationship("Alergia",   back_populates="nino")
-    vacunas  = relationship("Vacuna",    back_populates="nino")
+    acudientes  = relationship("NinoAcudiente",         back_populates="nino")
+    alergias    = relationship("Alergia",               back_populates="nino")
+    vacunas     = relationship("Vacuna",                back_populates="nino")
+    asistencias = relationship("Asistencia",            back_populates="nino")
+    historial   = relationship("HistorialNino",         back_populates="nino")
+    actividades = relationship("ActividadParticipante", back_populates="nino")

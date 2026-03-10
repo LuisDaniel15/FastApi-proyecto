@@ -1,6 +1,5 @@
-import uuid
-from sqlalchemy import Boolean, Column, String, TIMESTAMP, text
-from sqlalchemy.dialects.postgresql import UUID, ENUM
+from sqlalchemy import Boolean, Column, Integer, String, TIMESTAMP, text
+from sqlalchemy.dialects.postgresql import ENUM
 from sqlalchemy.orm import relationship
 
 from app.config.db_config import Base
@@ -8,13 +7,13 @@ from app.config.db_config import Base
 relacion_tipo = ENUM(
     'padre', 'madre', 'abuelo', 'abuela', 'tio', 'tia', 'tutor_legal', 'otro',
     name='relacion_tipo',
-    create_type=False  # ya existe en Supabase, no la crea de nuevo
+    create_type=False
 )
 
-class Tutor(Base):
-    __tablename__ = "tutores"
+class Acudiente(Base):
+    __tablename__ = "acudientes"
 
-    id                  = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    id                  = Column(Integer, primary_key=True, autoincrement=True)
     nombre              = Column(String(100), nullable=False)
     apellido            = Column(String(100), nullable=False)
     dni                 = Column(String(20), unique=True)
@@ -22,10 +21,10 @@ class Tutor(Base):
     telefono_emergencia = Column(String(20))
     email               = Column(String(150), unique=True)
     direccion           = Column(String)
-    relacion            = Column(relacion_tipo, nullable=False, default="otro")
-    activo              = Column(Boolean, default=True, nullable=False)
+    relacion            = Column(relacion_tipo, nullable=False, server_default="otro")
+    activo              = Column(Boolean, nullable=False, server_default=text("TRUE"))
     creado_en           = Column(TIMESTAMP(timezone=True), server_default=text("NOW()"))
     actualizado_en      = Column(TIMESTAMP(timezone=True), server_default=text("NOW()"))
 
-    # Relación con niños
-    ninos = relationship("NinoTutor", back_populates="tutor")
+    ninos          = relationship("NinoAcudiente", back_populates="acudiente")
+    notificaciones = relationship("Notificacion",  back_populates="acudiente")
